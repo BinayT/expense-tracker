@@ -19,6 +19,7 @@ export const AddTransaction = () => {
     setText("");
     setAmount("");
   };
+
   return (
     <div>
       <h3>Add new transaction</h3>
