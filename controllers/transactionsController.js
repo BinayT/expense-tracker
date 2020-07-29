@@ -23,7 +23,18 @@ exports.getTransactions = async (req, res, next) => {
 // @router -- /api/v1/transactions
 // @access -- public
 exports.addTransaction = async (req, res, next) => {
-  res.send("POST Transaction");
+  try {
+    const { text, amount } = req.body;
+
+    const transaction = await Transaction.create(req.body);
+
+    return res.status(201).json({
+      success: true,
+      data: transaction,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // @desc -- DELETES TRANSACTION
