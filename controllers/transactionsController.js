@@ -33,7 +33,14 @@ exports.addTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (err) {
-    console.log(err);
+    if (err.name === "ValidationError") {
+      const message = Object.values(err.errors).map((val) => val.message);
+
+      return res.status(400).json({
+        success: false,
+        error: message,
+      });
+    }
   }
 };
 
@@ -41,5 +48,18 @@ exports.addTransaction = async (req, res, next) => {
 // @router -- /api/v1/transactions/:id
 // @access -- public
 exports.deleteTransaction = async (req, res, next) => {
-  res.send("DELETE Transaction");
+  try {
+    const transaction = await Transaction.findById(req.params.id);
+
+    if (!transaction) {
+      res.status(404).json({ success: false, error: "Not transaction found" });
+    }
+    await transaction.remove();
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Deleted successfully", data: {} });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: "Server Error" });
+  }
 };
