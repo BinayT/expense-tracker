@@ -13,7 +13,7 @@ exports.addTransaction = (req, res, next) => {
 };
 
 // @desc -- DELETES TRANSACTION
-// @router -- /api/v1/transactions:id
+// @router -- /api/v1/transactions/:id
 // @access -- public
 exports.deleteTransaction = (req, res, next) => {
   res.send("DELETE Transaction");
